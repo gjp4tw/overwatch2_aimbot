@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\src\main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="..\lib\cublas64_10.dll" />
+    <CopyFileToFolders Include="..\lib\cublasLt64_10.dll" />
+    <CopyFileToFolders Include="..\lib\cudart64_102.dll" />
+    <CopyFileToFolders Include="..\lib\cudnn64_8.dll" />
+    <CopyFileToFolders Include="..\lib\opencv_core470.dll" />
+    <CopyFileToFolders Include="..\lib\opencv_dnn470.dll" />
+    <CopyFileToFolders Include="..\lib\opencv_highgui470.dll" />
+    <CopyFileToFolders Include="..\lib\opencv_imgcodecs470.dll" />
+    <CopyFileToFolders Include="..\lib\opencv_imgproc470.dll" />
+    <CopyFileToFolders Include="..\lib\opencv_videoio470.dll" />
+    <CopyFileToFolders Include="..\lib\pthreadGC2.dll" />
+    <CopyFileToFolders Include="..\lib\pthreadVC2.dll" />
+    <CopyFileToFolders Include="..\lib\yolo_cpp_dll.dll" />
+  </ItemGroup>
+</Project>
