@@ -11,6 +11,7 @@
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/dnn/dnn.hpp"
 #include <opencv2/dnn/all_layers.hpp>
+#include <interception.h>
 using namespace std;
 using namespace cv;
 
@@ -38,9 +39,9 @@ string model = "ow_final";
 int MAX_DIS = 55;
 bool TRIGGER = true;
 vector<bbox_t> DetectionObject;
-float smooth = 0.07;
-int strength = 3;
+int smooth = 30;
 Mat frame;
+
 void init_screenshot() {
 	cout << "initing screenshot...\n";
 	ZeroMemory(&bmi, sizeof(BITMAPINFO));
@@ -77,8 +78,7 @@ void loadNet() {
 	}
 }
 void move_mouse(int cx, int cy) {
-	for(int i=0;i<strength;i++)
-		mouse_event(MOUSEEVENTF_MOVE, cx, cy, 0, 0);
+	mouse_event(MOUSEEVENTF_MOVE, cx, cy, 0, 0);
 }
 void aimbot(){
 	init_screenshot();
@@ -103,19 +103,21 @@ void aimbot(){
 			AIM = !AIM;
 		}
 		if (GetAsyncKeyState(VK_UP) & 0x8000 != 0 && AIM) {
-			smooth += .02;
-			cout << "smooth\n";
+			smooth += 1;
+			cout << smooth << "\n";
 		}
 		if (GetAsyncKeyState(VK_DOWN) & 0x8000 != 0 && AIM) {
-			smooth -= .02;
+			smooth -= 1;
+			smooth = max(1, smooth);
 			cout << smooth<< "\n";
 		}
-		if(TRIGGER || GetAsyncKeyState(VK_XBUTTON1)&0x8000){
+		if(!TRIGGER || GetAsyncKeyState(VK_XBUTTON1)&0x8000){
 			start = chrono::high_resolution_clock::now();
 
 			BitBlt(hdcMem, 0, 0, Screenshot_W, Screenshot_H, hdc, LEFT, TOP, SRCCOPY);
 			double min_dis = 1e9;
-			vector<double> closest={};
+			vector<int> closest={};
+			float f;
 			switch (TYPE){
 			case 0: {
 				DetectionObject = detector->detect(frame, 0.85);
@@ -123,10 +125,13 @@ void aimbot(){
 					double dx = DetectionObject[i].x + DetectionObject[i].w / 2.0 - Screenshot_W / 2.0;
 					double dy = DetectionObject[i].y + DetectionObject[i].h /4.0 - Screenshot_H / 2.0;
 					double dis = double(sqrtf(dx * dx + dy * dy));
+					circle(frame, Point(int(DetectionObject[i].x + DetectionObject[i].w / 2.0), int(DetectionObject[i].y + DetectionObject[i].h / 4.0)), MAX_DIS, Scalar(0, 0, 255), 10);
 					if (dis > MAX_DIS)continue;
 					if (dis < min_dis) {
 						min_dis = dis;
-						closest = { dx, dy };
+						if (dis > 30)f = 0.1;
+						else f = 1.8;
+						closest = { int(f*dx * abs(dx) / (MAX_DIS + smooth)),int(f*dy * abs(dy) / (MAX_DIS + smooth)) ,int(DetectionObject[i].x + DetectionObject[i].w / 2.0), int(DetectionObject[i].y + DetectionObject[i].h / 4.0)};
 					}
 				}
 				break;
@@ -147,7 +152,9 @@ void aimbot(){
 						if (dis > MAX_DIS)continue;
 						if (dis < min_dis) {
 							min_dis = dis;
-							closest = { dx, dy };
+							if (dis > 30)f = 0.1;
+							else f = 1.8;
+							closest = { int(f * dx * abs(dx) / (MAX_DIS + smooth)),int(f * dy * abs(dy) / (MAX_DIS + smooth)) ,int(DetectionObject[i].x + DetectionObject[i].w / 2.0), int(DetectionObject[i].y + DetectionObject[i].h / 4.0) };
 						}
 					}
 				}
@@ -156,7 +163,7 @@ void aimbot(){
 				break;
 			}
 			if(AIM&&closest.size()){
-				thread(move_mouse, int(closest[0]*smooth), int(closest[1]*smooth)).detach();
+				thread(move_mouse, closest[0], closest[1]).detach();
 			}
 			end = chrono::high_resolution_clock::now();
 			duration = chrono::duration_cast<chrono::microseconds>(end - start);

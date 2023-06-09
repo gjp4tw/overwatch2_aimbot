@@ -62,6 +62,11 @@
       <FileType>Document</FileType>
     </CopyFileToFolders>
   </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="..\lib\interception.dll">
+      <FileType>Document</FileType>
+    </CopyFileToFolders>
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{29B1D8C0-2EDE-425A-97EF-49BB016E5894}</ProjectGuid>
@@ -184,7 +189,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)\lib;</AdditionalLibraryDirectories>
-      <AdditionalDependencies>yolo_cpp_dll.lib;opencv_core470.lib;opencv_videoio470.lib;opencv_imgcodecs470.lib;opencv_highgui470.lib;opencv_imgproc470.lib;opencv_dnn470.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>interception.lib;yolo_cpp_dll.lib;opencv_core470.lib;opencv_videoio470.lib;opencv_imgcodecs470.lib;opencv_highgui470.lib;opencv_imgproc470.lib;opencv_dnn470.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
       <Command>
