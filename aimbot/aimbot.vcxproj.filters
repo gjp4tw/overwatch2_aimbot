@@ -17,6 +17,5 @@
     <CopyFileToFolders Include="..\lib\pthreadGC2.dll" />
     <CopyFileToFolders Include="..\lib\pthreadVC2.dll" />
     <CopyFileToFolders Include="..\lib\yolo_cpp_dll.dll" />
-    <CopyFileToFolders Include="..\lib\interception.dll" />
   </ItemGroup>
 </Project>

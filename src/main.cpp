@@ -11,7 +11,6 @@
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/dnn/dnn.hpp"
 #include <opencv2/dnn/all_layers.hpp>
-#include <interception.h>
 using namespace std;
 using namespace cv;
 
