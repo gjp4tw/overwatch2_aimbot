@@ -1,0 +1,4 @@
+classes = 1
+train  = darknet/data/autosplit_train.txt
+names = models/ow_final/obj.names
+backup = darknet/backup/
